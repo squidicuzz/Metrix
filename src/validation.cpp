@@ -3825,12 +3825,11 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
         if(checkBlock.hashMerkleRoot != block.hashMerkleRoot && checkBlock.vtx.size() > 2){
             LogPrintf("Mismatched transaction at entry 2..\n");
             if(block.vtx.size() > 2 && block.vtx[2]->GetHash() == txMismatch){
-                //block.vtx.pop_back();
+                block.vtx.erase(2);
                 LogPrintf("Removed mismatched vtx!\n");
             }
             // Attempt to push the missing vtx into the expected block.
-            //block.vtx.push_back(checkBlock.vtx[2]);
-            block.vtx[2] = checkBlock.vtx[2];
+            block.vtx.push_back(checkBlock.vtx[2]);
             LogPrintf("Updated Tx %i to block.vtx\n", checkBlock.vtx[2]->GetHash().ToString());
             LogPrintf("New block hash for 264695 is %i\n", block.GetHash().ToString());
         }
