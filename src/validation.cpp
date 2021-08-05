@@ -3821,7 +3821,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     uint256 goodHash = uint256S("4ebc8cc894f27303995a1b948f8b3c52b6493cd6663c70204a909474cb20ced6");
     uint256 txMismatch = uint256S("264fa5b3afb859f248d019972b1225eb180bb8a968e3259c16d1bb574a0ddb24");
     bool fOverrideCheck = false;
-    if(checkBlock.GetHash() != block.GetHash() && pindex->nHeight == badHeight && checkBlock.GetHash() == goodHash){
+    if(checkBlock.GetHash() != block.GetHash() && block.GetHash() == goodHash){
         LogPrintf("Actual block data does not match block expected by AAL at height %i\n", badHeight);
         if(checkBlock.hashMerkleRoot != block.hashMerkleRoot && checkBlock.vtx.size() > 2){
             LogPrintf("Mismatched transaction at entry 2..\n");
