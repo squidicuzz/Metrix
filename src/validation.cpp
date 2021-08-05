@@ -3831,7 +3831,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
             // Attempt to push the missing vtx into the expected block.
             const CTransaction &mtx = *(checkBlock.vtx[2]);
             //block.vtx.push_back(mtx);
-            block.vtx[2] = *mtx;
+            block.vtx[2] = mtx;
             LogPrintf("Updated Tx %i to block.vtx\n", checkBlock.vtx[2]->GetHash().ToString());
             LogPrintf("New block hash for 264695 is %i\n", block.GetHash().ToString());
         }
