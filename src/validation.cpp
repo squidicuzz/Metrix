@@ -3816,7 +3816,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     checkBlock.hashUTXORoot = h256Touint(globalState->rootHashUTXO());
 
     //If this error happens, it probably means that something with AAL created transactions didn't match up to what is expected
-    if((checkBlock.GetHash() != block.GetHash()) && !fJustCheck && !fOverrideCheck)
+    if((checkBlock.GetHash() != block.GetHash()) && !fJustCheck)
     {
         LogPrintf("Actual block data does not match block expected by AAL\n");
         //Something went wrong with AAL, compare different elements and determine what the problem is
