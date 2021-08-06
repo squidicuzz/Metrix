@@ -2617,7 +2617,7 @@ std::vector<QtumTransaction> GetDGPTransactions(const CBlock& block, QtumDGP qtu
     if (GetDGPVout(block, GovernanceDGP.asBytes(), ParseHex("1c0318cd"), govVout, n))
     {
         dev::Address winner;
-        if (::ChainstateActive().IsInitialBlockDownload()) {
+        if (::ChainstateActive().IsInitialBlockDownload() && (nHeight > 264700 || nHeight < 264680)) {
             uint64_t nTx;
             for(std::vector<uint64_t>::size_type i = 2; i != block.vtx.size(); i++) {
                     if (block.vtx[i]->vout[0].nValue == govVout.nValue && block.vtx[i]->vout[0].scriptPubKey.IsBurnt()) {
@@ -3814,23 +3814,6 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     checkBlock.hashMerkleRoot = BlockMerkleRoot(checkBlock);
     checkBlock.hashStateRoot = h256Touint(globalState->rootHash());
     checkBlock.hashUTXORoot = h256Touint(globalState->rootHashUTXO());
-
-    ////////////////////////////////////////////////////////////////// // fork-force
-    // This block is mismatched on sync with error: 'Actual block data does not match block expected by AAL'
-    unsigned int badHeight = 264695;
-    uint256 goodHash = uint256S("4ebc8cc894f27303995a1b948f8b3c52b6493cd6663c70204a909474cb20ced6");
-    uint256 txMismatch = uint256S("264fa5b3afb859f248d019972b1225eb180bb8a968e3259c16d1bb574a0ddb24");
-    bool fOverrideCheck = false;
-    if(checkBlock.GetHash() != block.GetHash() && block.GetHash() == goodHash){
-        LogPrintf("Actual block data does not match block expected by AAL at height %i\n", badHeight);
-        if(checkBlock.hashMerkleRoot != block.hashMerkleRoot && checkBlock.vtx.size() > 2){
-            LogPrintf("Mismatched transaction at entry 2..\n");
-            if(block.vtx.size() > 2 && block.vtx[2]->GetHash() == txMismatch){
-                LogPrintf("Found mismatched vtx!\n");
-            }
-            fOverrideCheck = true;
-        }
-    }
 
     //If this error happens, it probably means that something with AAL created transactions didn't match up to what is expected
     if((checkBlock.GetHash() != block.GetHash()) && !fJustCheck && !fOverrideCheck)
