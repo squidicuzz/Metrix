@@ -2129,8 +2129,8 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         }
 
         if(::ChainActive().Tip()->nHeight >= chainparams.GetConsensus().MIP1Height){
-            const CBlockIndex* pindex == ::ChainActive().Tip()
-            const Consensus::Params& consensusParams = Params().GetConsensus();
+            const CBlockIndex* pindex = ::ChainActive().Tip()
+            const Consensus::Params consensusParams = Params().GetConsensus();
             Consensus::DeploymentPos pos = Consensus::DeploymentPos(Consensus::DEPLOYMENT_CHAIN_PATH);
             ThresholdState state = VersionBitsState(pindex, consensusParams, pos, versionbitscache);
             switch (state) {
